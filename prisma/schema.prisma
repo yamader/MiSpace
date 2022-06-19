@@ -1,0 +1,29 @@
+datasource db {
+  url      = env("DB_URL")
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  fqdn      String
+  foreignId Int
+  held      Space[]  @relation("host")
+  heldIds   Int[]
+  joined    Space[]
+}
+
+model Space {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  endedAt   DateTime?
+  private   Boolean
+  title     String
+  host      User      @relation("host", fields: [hostId], references: [id])
+  hostId    Int
+  listener  User[]
+}
