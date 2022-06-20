@@ -11,9 +11,11 @@ export const loader: LoaderFunction = async ({ params }) => {
   const res = await db.space.findUnique({
     where: { id: parseInt(params.id!) },
   })
-  if (res === null) throw new Error("404") //
+  if (res === null) throw new Response("Not Found", { status: 404 })
   const space = res!
-  if (space.private) throw new Error("private!!") //
+  if (space.private) {
+    throw new Error("private!!")
+  }
   const data: LoaderData = { space }
   return json(data)
 }
