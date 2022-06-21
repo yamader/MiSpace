@@ -18,7 +18,7 @@ const Index = () => {
       <section
         style={{
           padding: "1rem",
-          border: "solid 2px",
+          border: "2px solid",
           borderRadius: ".5rem",
         }}>
         <h2>Explore</h2>
@@ -35,7 +35,7 @@ const Space = ({ a }) => {
       style={{
         display: "flex",
         padding: "1rem",
-        border: "solid 2px",
+        border: "2px solid",
         borderRadius: ".5rem",
       }}>
       <FaceLarge />

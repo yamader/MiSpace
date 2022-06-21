@@ -8,13 +8,20 @@ generator client {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
+  id        Int    @id @default(autoincrement())
   fqdn      String
   foreignId Int
+
+  enable    Boolean  @default(true)
+  createdAt DateTime @default(now())
   held      Space[]  @relation("host")
   heldIds   Int[]
   joined    Space[]
+
+  nick String
+  name String
+  // fqdn
+  icon String
 }
 
 model Space {
