@@ -7,10 +7,17 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model MiAuth {
+  id        String   @id
+  createdAt DateTime @default(now())
+  host      String
+}
+
 model User {
   id        Int    @id @default(autoincrement())
   fqdn      String
-  foreignId Int
+  foreignId String
+  token     String
 
   enable    Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -18,7 +25,7 @@ model User {
   heldIds   Int[]
   joined    Space[]
 
-  nick String
+  nick String?
   name String
   // fqdn
   icon String

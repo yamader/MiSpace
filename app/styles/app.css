@@ -4,7 +4,13 @@
 @import "sanitize.css/typography.css";
 */
 
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@400;700;800;900&display=swap");
+
 /* Global */
+
+body {
+  font-family: "M PLUS 2", sans-serif;
+}
 
 hr {
   border: 1px solid;

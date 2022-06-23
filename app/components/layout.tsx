@@ -1,12 +1,13 @@
 /** @jsx jsx */
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { NavLink } from "@remix-run/react"
 import { jsx } from "@emotion/react"
 import styled from "@emotion/styled"
-import { FaceSmall } from "~/components/face"
 import type { ReactNode } from "react"
 
-type UserMeta = {
+import { FaceSmall } from "~/components/face"
+
+export type UserMeta = {
   nick: string
   name: string
   fqdn: string
@@ -26,14 +27,14 @@ const Layout = ({
       maxWidth: "840px",
       minHeight: "100vh",
       margin: "0 auto",
-      padding: "0 .5em",
       flexDirection: "column",
     }}>
     <header>
       <nav
         css={{
           display: "flex",
-          margin: "1rem 0",
+          margin: ".5rem 0",
+          padding: "0 .5rem",
           justifyContent: "space-between",
           alignItems: "center",
           userSelect: "none",
@@ -41,7 +42,7 @@ const Layout = ({
         <div
           css={{
             fontSize: "2rem",
-            fontWeight: "bold",
+            fontWeight: "900",
           }}>
           MiSpace
         </div>
@@ -55,7 +56,19 @@ const Layout = ({
         </div>
       </nav>
     </header>
-    <section>{children}</section>
+    <hr
+      css={{
+        display: "flex",
+        width: "100%",
+        marginTop: 0,
+      }}
+    />
+    <section
+      css={{
+        padding: "0 1em",
+      }}>
+      {children}
+    </section>
     <footer
       css={{
         marginTop: "auto",
@@ -69,13 +82,11 @@ const Layout = ({
 )
 export default Layout
 
-// const Header = ({ user }: { user: UserMeta | null }) => ()
-
-const NavLinks = ({ user }: { user: User | null }) => {
+const NavLinks = ({ user }: { user: UserMeta | null }) => {
   const Ul = styled.ul({
     display: "flex",
     fontSize: "1.2rem",
-    fontWeight: "bold",
+    fontWeight: "800",
     "li + li": {
       marginLeft: "1rem",
     },
@@ -115,8 +126,13 @@ const NavLinks = ({ user }: { user: User | null }) => {
   )
 }
 
-const MeIcon = ({ user }: { user: User | null }) => {
+const MeIcon = ({ user }: { user: UserMeta | null }) => {
   const [popup, setPopup] = useState(false)
+  const popupRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (popupRef.current) popupRef.current.focus()
+  }, [popup])
 
   return !user ? null : (
     <div
@@ -124,13 +140,24 @@ const MeIcon = ({ user }: { user: User | null }) => {
         position: "relative",
         marginLeft: "1rem",
       }}>
-      <div onClick={() => setPopup(!popup)}>
+      <button
+        onClick={() => setPopup(!popup)} //
+        css={{
+          border: "none",
+        }}>
         <FaceSmall icon={user.icon} />
-      </div>
+      </button>
       {popup && (
         <div
+          ref={popupRef}
+          tabIndex={0}
+          onBlur={e => {
+            if (!e.currentTarget.contains(e.relatedTarget)) {
+              setPopup(false)
+            }
+          }}
           css={{
-            padding: ".5rem",
+            padding: ".25rem",
             position: "absolute",
             top: "120%",
             right: ".5rem",
@@ -146,6 +173,10 @@ const MeIcon = ({ user }: { user: User | null }) => {
               margin: 0,
               padding: ".25rem .5rem",
               width: "100%",
+              borderRadius: ".25rem",
+              ":hover": {
+                background: "lightgray",
+              },
             },
             "> hr": {
               margin: ".25rem 0",
@@ -165,7 +196,18 @@ const MeIcon = ({ user }: { user: User | null }) => {
             </span>
           </p>
           <hr />
-          <NavLink to='/logout'>Logout</NavLink>
+          <form action='/logout' method='post'>
+            <button
+              type='submit'
+              css={{
+                width: "100%",
+                padding: 0,
+                border: "none",
+                textAlign: "start",
+              }}>
+              Logout
+            </button>
+          </form>
         </div>
       )}
     </div>

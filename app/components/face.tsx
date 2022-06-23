@@ -1,3 +1,6 @@
+/** @jsx jsx */
+import { jsx } from "@emotion/react"
+
 type FaceFlame = "none" | "gray" | "green" | "red"
 
 type FaceProps = {
@@ -25,25 +28,22 @@ const Face = ({
   frame = "none",
   hexagon = false,
 }: FaceProps & { size: string }) => (
-  <>
-    <img
-      src={icon}
-      style={{
-        width: size,
-        height: size,
-        ...(hexagon
-          ? {
-              borderRadius: 0,
-            }
-          : {
-              borderRadius: "100%",
-              ...(frame !== "none" && {
-                border: `.4rem solid ${frameColor(frame)}`,
-              }),
+  <img
+    src={icon}
+    css={{
+      width: size,
+      height: size,
+      objectFit: "cover",
+      ...(hexagon
+        ? { borderRadius: 0 }
+        : {
+            borderRadius: "100%",
+            ...(frame !== "none" && {
+              border: `.4rem solid ${frameColor(frame)}`,
             }),
-      }}
-    />
-  </>
+          }),
+    }}
+  />
 )
 export default Face
 
